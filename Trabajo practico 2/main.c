@@ -1,28 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "personas.h"
-#define TAM 20
+#include "ArrayEmployees.h"
+#define TAM 1000
 
 int main()
 {
     char seguir='s';
-    int opcion=0,aux,dni;
-    ePersona personas[TAM];
+    int opcion=0,aux,id, flag = 0;
+    Employee personas[TAM];
+    float promedio;
 
-    inicializarEstado(personas,TAM);
+   initEmployees(personas,TAM);
+
 
     while(seguir=='s')
     {
         system("cls");
-        printf("1- Agregar persona\n");
-        printf("2- Borrar persona\n");
-        printf("3- Imprimir lista ordenada por  nombre\n");
-        printf("4- Imprimir grafico de edades\n\n");
-        printf("5- Hardcodeo\n");
-        printf("6- Salir\n");
 
-        scanf("%d",&opcion);
-
+        opcion = menu();
         switch(opcion)
         {
             case 1:
@@ -37,48 +32,81 @@ int main()
                 {
                     alta(personas,aux);
                 }
+                flag = 1;
 
                 system("pause");
                 break;
             case 2:
-                system("cls");
-
-                printf("Ingrese el DNI: ");
-                scanf("%d",&dni);
-                aux = buscarPorDni(personas,dni,TAM);
-                if (aux == -1)
+                if (flag == 0)
                 {
-                    printf("No se encontro el DNI ingresado\n");
+                    printf("No se ingresaron empleados\n");
                 }
                 else
                 {
-                    baja(personas,aux);
-                }
+                    printEmployees(personas,TAM);
 
-                system("pause");
+                    printf("\nIngrese el ID: ");
+                    scanf("%d",&id);
+
+                    modificar (personas, TAM,id);
+
+                }
+                 system("pause");
+
                 break;
             case 3:
                 system("cls");
+                if (flag == 0)
+                {
+                    printf("No se ingresaron empleados\n");
+                }
+                else
+                {
+                    printEmployees(personas,TAM);
 
-                burbujeo(personas,TAM);
-                mostrar(personas,TAM);
+                    printf("\nIngrese el ID: ");
+                    scanf("%d",&id);
+
+                    removeEmployee(personas,TAM,id);
+                }
 
                 system("pause");
+
                 break;
             case 4:
                 system("cls");
+                if (flag == 0)
+                {
+                    printf("No se ingresaron empleados\n");
+                }
+                else
+                {
+                    printf("Ingrese el orden deseado: \n0- Descendente \n1- Ascendente\n\n");
+                    scanf("%d",&aux);
 
-                grafico ( personas,TAM);
+                    sortEmployees(personas,TAM,aux);
+                    printEmployees(personas,TAM);
 
+                    promedio = promedioSalario(personas,TAM);
+                    printf("\n\n El promedio de los salarios es: %.2f\n",promedio);
+
+                    aux = employeeOverProm (personas,TAM,promedio);
+                    printf("La cantidad de empleados que superan el promedio es: %d\n",aux);
+                }
                 system("pause");
                 break;
             case 5:
+                flag = 1;
                 hardcodeo (personas);
                 system("Pause");
-
                 break;
             case 6:
                 seguir = 'n';
+                break;
+            case 7:
+                system("cls");
+                printEmployees(personas,TAM);
+                system("pause");
                 break;
             default:
                 printf("Ingrese una opcion valida <1-5>\n");
