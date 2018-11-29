@@ -50,7 +50,6 @@ void getTestCase02(void)
     LinkedList* list;
     void* pElement;
     void* pElement2 = newEmployee(10,"JUAN","PEREZ",1,1);
-printf("Este es juan: %p\n", pElement2);
     list = ll_newLinkedList();
     ll_add(list,pElement2);
 
